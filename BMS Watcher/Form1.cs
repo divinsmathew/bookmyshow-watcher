@@ -67,6 +67,7 @@ namespace BMSWatcher
             WatchButton.Visible = false;
             MovieID.Visible = false;
         }
+
         private async Task<bool> Verify()
         {
             if (string.IsNullOrWhiteSpace(MovieID.Text))
@@ -92,47 +93,6 @@ namespace BMSWatcher
                 WatchLabel.Text += Code[s];
 
             return true;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            WebBrowser b = new WebBrowser();
-            b.ScriptErrorsSuppressed = true;
-            b.DocumentCompleted += B_Navigated;
-
-            b.Navigate("https://in.bookmyshow.com/kochi/movies/avengers-endgame/ET00090482");
-        }
-
-        private void B_Navigated(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            var b = (WebBrowser)sender;
-            DataUsed += b.DocumentText.Length;
-
-            if (b.Document.GetElementById("user-wts-true") != null)
-            {
-                CountLabel.Text = "Data Used : " + Clean(DataUsed);
-                LastCheckedLabel.Text = "Last Checked : " + DateTime.Now.ToString();
-                AttemptsLabel.Text = "Attempts : " + (++Attempts).ToString();
-
-                if (Attempts % 3 == 0 || Attempts % 2 == 0)
-                    b.Navigate("https://in.bookmyshow.com/kochi/movies/avengers-endgame/ET00090482");
-            }
-            else
-            {
-
-                new SoundPlayer(Properties.Resources.Police).Play();
-            }
-        }
-
-        private string Clean(long len)
-        {
-            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
-            if (len == 0)
-                return "0" + suf[0];
-            long bytes = Math.Abs(len);
-            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
-            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
-            return (Math.Sign(len) * num).ToString() + suf[place];
         }
     }
 }
