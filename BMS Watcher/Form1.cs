@@ -10,7 +10,7 @@ namespace BMSWatcher
     public partial class BMSWatcher : Form
     {
         int Attempts = 0;
-        long DataUsed = 0;
+
         public BMSWatcher()
         {
             InitializeComponent();
